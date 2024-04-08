@@ -82,21 +82,26 @@ public class TowerTile : MonoBehaviour
     public void ResetColor()
     {
         if (Active || !initialized)
-            SetColor(TileColorManager.Instance.GetColor(ColorIndex));
+            SetColor(TileMaterialManager.Instance.GetMaterial(ColorIndex));
         else
             SetColor(TileColorManager.Instance.GetDisabledColor());
     }
 
     public void SetColorIndex(int colorIndex)
     {
-        if (colorIndex >= 0 && colorIndex < TileColorManager.Instance.ColorCount)
+        if (colorIndex >= 0 && colorIndex < TileMaterialManager.Instance.ColorCount)
             ColorIndex = colorIndex;
-        SetColor(TileColorManager.Instance.GetColor(colorIndex));
+        SetColor(TileMaterialManager.Instance.GetMaterial(ColorIndex));
     }
 
     public virtual void SetColor(Color color)
     {
         renderer.sharedMaterial = TileColorManager.GetSharedMaterial(originalMaterial, color);
+    }
+
+    public virtual void SetColor(Material mat)
+    {
+        renderer.sharedMaterial = mat;
     }
 
     public void SetFreezed(bool value)
@@ -112,7 +117,7 @@ public class TowerTile : MonoBehaviour
         initialized = true;
         Active = value;
         if (value)
-            SetColor(TileColorManager.Instance.GetColor(ColorIndex));
+            SetColor(TileMaterialManager.Instance.GetMaterial(ColorIndex));
         else
             SetColor(TileColorManager.Instance.GetDisabledColor());
     }
