@@ -49,7 +49,7 @@ public class Tower : MonoBehaviour
                 Quaternion direction = Quaternion.AngleAxis(angleStep * i, Vector3.up) * floorRotation;
                 Vector3 position = transform.position + Vector3.up * y * TileHeight + direction * Vector3.forward * towerRadius;
                 TowerTile tileInstance = Instantiate(Random.value > SpecialTileChance ? TilePrefab : SpecialTilePrefabs[Random.Range(0, SpecialTilePrefabs.Length)], position, direction * TilePrefab.transform.rotation, transform);
-                tileInstance.SetColorIndex(Mathf.FloorToInt(Random.value * TileColorManager.Instance.ColorCount));
+                tileInstance.SetColorIndex(Mathf.FloorToInt(Random.value * TileMaterialManager.Instance.ColorCount));
                 tileInstance.SetFreezed(true);
                 tileInstance.Floor = y;
                 tileInstance.OnTileDestroyed += OnTileDestroyedCallback;
