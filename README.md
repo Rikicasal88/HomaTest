@@ -14,7 +14,7 @@ I prefer not to have UI element inside a not Transform/parent, I prefer to have 
 System Architecture: About the code on itself, I wouldn't have used a simple static class for the FxPool, but I would have created a Singleton(plus gameobject) where to store the PS, 
 and because there is already a pooler active I wouldn't create all those partcicles on the GameManager Awake, that's exactly why the pooler was created, so that we don't have object waiting before we need them.
 
-Code Quality: I also found in Tower.cs that when we intsanciate all the tiles we do a new of the array that will contain all the tiles by floor, in that case if we use .Clear() the game will not create another List<List<TowerTile>> every time we enter the method.
+Code Quality: I also found in Tower.cs that when we intsanciate all the tiles we do a new() of the array that will contain all the tiles by floor, in that case if we use .Clear() the game will not create another List<List<TowerTile>> every time we enter the method.
 in the same method we also instantiate all the tiles and we are not using a support variable for that, so it means that every time we cicle that part of code the game is creating space for a new instance 
 at the same time loosing the reference to the previous gameObject, in a much bigger game the GC would have pass at the end of the frame to clean all the unreferenced gameObjects.
 https://discussions.unity.com/t/is-new-list-t-worse-than-using-clear/6801
@@ -32,3 +32,12 @@ https://docs.unity3d.com/Packages/com.unity.addressables@1.15/manual/LoadSceneAs
 
 
 
+
+2. Update the initialization sequence
+In this task, we’re going to soon add multiple SDKs to the project, but currently, the initialization lacks structure and sequencing allowing us to plug in different mechanisms during the process (and for example hold on the startup until some systems are ready).
+Prepare a code solution that would streamline the initialization process of the game. There is no need to dive deep and rework the entire app. Showcase the general idea via code and briefly explain the pros and cons. Build a plan to migrate the initialization workflow to your idea.
+
+For this task I thought about what usually we have in all games, so I created a quick Loading page. On Start() I just call the coroutine that will handle the loading of the GameScene.
+In this coroutine I also started all the SDK initialization that we need and we force the coroutine to wait until all the SDKs are initilaized, I did 2 quick example of how we can wait for the SDKs, 
+using "yield return SdkCallback()" in case is needed befor the scene load, otherwise I started some coroutines to just initialize the SKDs needed and I am waiting for the SKDs to do their callback.
+    
